@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的旅行手帳</title>
+
+  <!-- 字體：霞鶩文楷（手寫感標題）＋ 思源宋體（內文） -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Serif+TC:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- 地圖套件 Leaflet（已放在 lib/ 資料夾，不依賴外部網站） -->
+  <link rel="stylesheet" href="lib/leaflet/leaflet.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <!-- 飛機沿著虛線航線飛過頁首 -->
+    <svg class="flight" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <path id="flight-path" class="flight-path" d="M-80 250 C 180 60, 420 40, 560 150 S 900 280, 1280 70" />
+      <g class="plane">
+        <path d="M0 -9 L22 0 L0 9 L5 0 Z" />
+        <animateMotion dur="11s" repeatCount="indefinite" rotate="auto">
+          <mpath href="#flight-path" />
+        </animateMotion>
+      </g>
+    </svg>
+
+    <!-- 漂浮的小貼紙 -->
+    <span class="sticker sticker-1" aria-hidden="true">🧳</span>
+    <span class="sticker sticker-2" aria-hidden="true">📷</span>
+    <span class="sticker sticker-3" aria-hidden="true">🌏</span>
+    <span class="sticker sticker-4" aria-hidden="true">🎫</span>
+
+    <p class="stamp">TRAVEL JOURNAL</p>
+    <h1 id="site-title">我的旅行手帳</h1>
+    <svg class="squiggle" viewBox="0 0 300 20" aria-hidden="true">
+      <path d="M4 12 Q 25 2, 48 11 T 94 11 T 140 11 T 186 11 T 232 11 T 296 9" />
+    </svg>
+    <p id="site-subtitle" class="subtitle"></p>
+    <div id="stats" class="stats"></div>
+  </header>
+
+  <main>
+    <!-- 世界地圖 -->
+    <section class="map-wrap">
+      <span class="tape tape-left"></span>
+      <span class="tape tape-right"></span>
+      <div class="view-toggle" role="group" aria-label="地圖模式">
+        <button data-view="globe" aria-pressed="true">🌏 地球</button>
+        <button data-view="flat" aria-pressed="false">🗺️ 平面</button>
+      </div>
+      <div id="globe" class="globe" aria-label="3D 旅行地球"></div>
+      <div id="map" aria-label="平面旅行地圖" hidden></div>
+      <p class="map-hint">拖曳旋轉・點一下後可用滾輪縮放・點圖釘飛過去</p>
+    </section>
+
+    <!-- 旅程列表（拍立得卡片） -->
+    <section class="trips">
+      <h2 class="section-title">旅程清單</h2>
+      <div id="trip-list" class="trip-list"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p><span class="footer-plane" aria-hidden="true">✈</span> 下一站，要去哪裡呢？</p>
+  </footer>
+
+  <!-- 旅程內頁（點圖釘或卡片時打開） -->
+  <div id="journal" class="journal" hidden>
+    <div class="journal-backdrop" data-close></div>
+    <article class="journal-page" role="dialog" aria-modal="true" aria-labelledby="j-title">
+      <button class="close-btn" data-close aria-label="關閉">×</button>
+      <div id="j-stamp" class="passport-stamp big" aria-hidden="true"></div>
+      <p id="j-meta" class="j-meta"></p>
+      <h2 id="j-title"></h2>
+      <div id="j-photos" class="j-photos"></div>
+      <div id="j-story" class="j-story"></div>
+    </article>
+  </div>
+
+  <!-- 照片放大檢視 -->
+  <div id="lightbox" class="lightbox" hidden>
+    <button class="lb-btn lb-close" aria-label="關閉">×</button>
+    <button class="lb-btn lb-prev" aria-label="上一張">‹</button>
+    <figure>
+      <img id="lb-img" src="" alt="">
+      <figcaption id="lb-caption"></figcaption>
+    </figure>
+    <button class="lb-btn lb-next" aria-label="下一張">›</button>
+  </div>
+
+  <script src="lib/leaflet/leaflet.js"></script>
+  <script src="lib/world.js"></script>
+  <script src="lib/three/three.min.js"></script>
+  <script src="lib/three/OrbitControls.js"></script>
+  <script src="lib/earth-texture.js"></script>
+  <script src="globe.js"></script>
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+/* ===== 顏色設定（想換色只要改這裡） ===== */
+:root {
+  --paper: #fbf3e4;        /* 紙張底色 */
+  --paper-dark: #f1e5cc;
+  --ink: #3b2d24;          /* 文字顏色 */
+  --ink-soft: #7d6b5b;
+  --accent: #e0603f;       /* 圖釘、強調色（珊瑚橘） */
+  --mint: #4fa3a5;
+  --sun: #f2b544;
+  --rose: #e07a95;
+  --sky: #6c8ccf;
+  --card: #fffdf8;         /* 拍立得白邊 */
+  --shadow: 0 4px 12px rgba(80, 55, 30, .16);
+  --shadow-lift: 0 18px 34px rgba(80, 55, 30, .26);
+  --hand: "LXGW WenKai TC", "Noto Serif TC", serif;
+  --body: "Noto Serif TC", serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  /* 幾團柔和的顏色 ＋ 筆記本橫線 */
+  background-image:
+    radial-gradient(circle at 8% 6%, rgba(242, 181, 68, .22), transparent 28%),
+    radial-gradient(circle at 92% 12%, rgba(79, 163, 165, .18), transparent 26%),
+    radial-gradient(circle at 80% 85%, rgba(224, 122, 149, .14), transparent 30%),
+    repeating-linear-gradient(to bottom, transparent 0 31px, rgba(160, 130, 90, .11) 31px 32px);
+  background-attachment: fixed, fixed, fixed, scroll;
+  color: var(--ink);
+  font-family: var(--body);
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+main { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+
+/* ===== 頁首 ===== */
+.site-header { position: relative; text-align: center; padding: 56px 16px 32px; overflow: hidden; }
+
+/* 飛機航線 */
+.flight { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.flight-path {
+  fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-dasharray: 2 12;
+  stroke-linecap: round; opacity: .45;
+}
+.plane path { fill: var(--accent); }
+
+/* 漂浮貼紙 */
+.sticker {
+  position: absolute; display: grid; place-items: center;
+  width: 58px; height: 58px; border-radius: 50%; font-size: 1.7rem;
+  background: var(--card); box-shadow: var(--shadow); border: 3px dashed rgba(0,0,0,.06);
+  animation: bob 5s ease-in-out infinite;
+}
+.sticker-1 { left: 9%;  top: 26%; --r: -12deg; }
+.sticker-2 { left: 17%; top: 64%; --r: 10deg;  animation-delay: -1.5s; width: 48px; height: 48px; font-size: 1.4rem; }
+.sticker-3 { right: 10%; top: 22%; --r: 8deg;  animation-delay: -3s; }
+.sticker-4 { right: 18%; top: 62%; --r: -6deg; animation-delay: -2.2s; width: 48px; height: 48px; font-size: 1.4rem; }
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(var(--r)); }
+  50%      { transform: translateY(-10px) rotate(calc(var(--r) * -1)); }
+}
+
+.stamp {
+  position: relative; display: inline-block; margin: 0 0 10px; padding: 3px 14px;
+  border: 2px solid var(--accent); color: var(--accent);
+  font-size: .75rem; letter-spacing: .3em; transform: rotate(-3deg);
+  border-radius: 4px; background: rgba(255,255,255,.5);
+  animation: stampIn .6s .2s cubic-bezier(.3, 1.6, .5, 1) backwards;
+}
+h1 {
+  position: relative; font-family: var(--hand); font-size: clamp(2.4rem, 7vw, 4rem);
+  margin: 0; font-weight: 700; line-height: 1.25; letter-spacing: .04em;
+}
+h1 span { display: inline-block; animation: dropIn .7s cubic-bezier(.3, 1.5, .5, 1) backwards; animation-delay: calc(.35s + var(--i) * .08s); }
+h1 span:nth-child(odd)  { color: var(--ink); }
+h1 span:nth-child(3n)   { color: var(--accent); }
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-40px) rotate(-12deg); }
+}
+.squiggle { position: relative; display: block; width: min(300px, 70%); height: 20px; margin: 2px auto 0; }
+.squiggle path {
+  fill: none; stroke: var(--sun); stroke-width: 5; stroke-linecap: round;
+  stroke-dasharray: 340; stroke-dashoffset: 340; animation: draw 1.2s 1s ease-out forwards;
+}
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.subtitle { position: relative; margin: 6px 0 0; color: var(--ink-soft); font-family: var(--hand); font-size: 1.2rem; }
+
+/* 統計：票根 */
+.stats { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 22px; }
+.ticket {
+  position: relative; display: flex; align-items: baseline; gap: 6px;
+  padding: 8px 20px 8px 46px; background: var(--card); border-radius: 8px;
+  box-shadow: var(--shadow); border-left: 6px solid var(--c);
+  font-family: var(--hand); color: var(--ink-soft);
+  animation: popIn .5s cubic-bezier(.3, 1.5, .5, 1) backwards; animation-delay: calc(.9s + var(--i) * .12s);
+  transition: transform .2s;
+}
+.ticket:hover { transform: translateY(-3px) rotate(-1deg); }
+/* 票根兩側的小缺口 */
+.ticket::before, .ticket::after {
+  content: ""; position: absolute; right: -7px; width: 14px; height: 14px; border-radius: 50%; background: var(--paper);
+}
+.ticket::before { top: 6px; }
+.ticket::after  { bottom: 6px; }
+.ticket-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 1.15rem; }
+.ticket b { font-size: 1.7rem; color: var(--c); line-height: 1; min-width: 1.2ch; text-align: right; }
+@keyframes popIn { from { opacity: 0; transform: scale(.6) translateY(10px); } }
+
+/* ===== 地圖 ===== */
+.map-wrap {
+  position: relative; background: var(--card); padding: 12px;
+  box-shadow: var(--shadow); transform: rotate(-.4deg); margin: 8px 0 48px;
+  animation: riseIn .8s .3s ease-out backwards;
+}
+@keyframes riseIn { from { opacity: 0; transform: translateY(30px) rotate(-2deg); } }
+#map { height: min(62vh, 520px); width: 100%; background: #d6e4e1; } /* 海洋顏色 */
+
+.tape {
+  position: absolute; top: -12px; width: 110px; height: 26px; z-index: 500;
+  box-shadow: 0 1px 2px rgba(0,0,0,.08); opacity: .85;
+}
+.tape-left  { left: 24px;  transform: rotate(-6deg);
+  background: repeating-linear-gradient(45deg, var(--mint) 0 8px, #8fcfc9 8px 16px); }
+.tape-right { right: 24px; transform: rotate(5deg);
+  background: repeating-linear-gradient(-45deg, var(--sun) 0 8px, #f7d58c 8px 16px); }
+
+/* 圖釘 */
+.pin {
+  width: 28px; height: 28px; border-radius: 50% 50% 50% 0;
+  background: var(--accent); transform: rotate(-45deg);
+  border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.35);
+  transition: transform .15s;
+}
+.pin:hover { transform: rotate(-45deg) scale(1.15); }
+.leaflet-tooltip.pin-label {
+  font-family: var(--hand); font-size: 1rem; color: var(--ink);
+  background: var(--card); border: none; box-shadow: var(--shadow);
+}
+/* 平面地圖的航線 */
+.flat-arc { animation: flow 1.4s linear infinite; opacity: .7; }
+@keyframes flow { to { stroke-dashoffset: -28; } }
+
+/* 家 */
+.home-dot {
+  position: relative; display: block; width: 14px; height: 14px; border-radius: 50%;
+  background: #fff; border: 3px solid var(--sun); box-shadow: 0 0 0 0 rgba(242,181,68,.7);
+  animation: homePulse 2s ease-out infinite;
+}
+.home-dot span {
+  position: absolute; left: 50%; top: 16px; transform: translateX(-50%); white-space: nowrap;
+  font-family: var(--hand); font-size: .8rem; color: var(--ink);
+  background: rgba(255,253,248,.9); padding: 0 6px; border-radius: 3px;
+}
+.home-dot span::before { content: "🏠 "; }
+@keyframes homePulse { to { box-shadow: 0 0 0 14px rgba(242,181,68,0); } }
+
+/* ===== 旅程卡片（拍立得） ===== */
+.section-title { font-family: var(--hand); font-size: 1.9rem; text-align: center; margin: 0 0 28px; }
+.section-title::before { content: "✦ "; color: var(--sun); }
+.section-title::after  { content: " ✦"; color: var(--sun); }
+.trip-list {
+  display: grid; gap: 40px 26px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  padding: 14px 0 32px;
+}
+.polaroid {
+  position: relative; background: var(--card); padding: 12px 12px 16px; border: none; cursor: pointer;
+  box-shadow: var(--shadow); text-align: left; font: inherit; color: inherit;
+  transform: rotate(var(--rot));
+  transition: transform .35s cubic-bezier(.3, 1.4, .5, 1), box-shadow .3s;
+}
+/* 還沒捲到的卡片先藏起來；捲到時（.in）飛進來 */
+.polaroid:not(.in) { opacity: 0; transform: translateY(50px) rotate(calc(var(--rot) * 4)) scale(.9); }
+.polaroid.in {
+  transition: transform .7s cubic-bezier(.3, 1.4, .5, 1), opacity .5s, box-shadow .3s;
+  transition-delay: calc(var(--i) * .09s), calc(var(--i) * .09s), 0s;
+}
+.polaroid.in:hover, .polaroid.in:focus-visible {
+  transform: rotate(0) translateY(-8px) scale(1.03); box-shadow: var(--shadow-lift);
+  outline: none; transition-delay: 0s; z-index: 2;
+}
+.polaroid:focus-visible { box-shadow: var(--shadow-lift), 0 0 0 3px var(--c); }
+
+/* 每張卡片上方的紙膠帶，顏色輪流 */
+.card-tape {
+  position: absolute; top: -11px; left: 50%; width: 84px; height: 22px; z-index: 1;
+  transform: translateX(-50%) rotate(calc(var(--rot) * -2));
+  background: linear-gradient(rgba(255,255,255,.3), rgba(255,255,255,.3)), var(--c);
+  opacity: .72; box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+.card-tape::after {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(-45deg, rgba(255,255,255,.35) 0 4px, transparent 4px 9px);
+}
+
+.photo-wrap { position: relative; display: block; }
+.photo-clip { position: relative; display: block; overflow: hidden; }
+.polaroid img {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; background: var(--paper-dark);
+  transition: transform .6s ease;
+}
+.polaroid:hover img { transform: scale(1.08); }
+.badge {
+  position: absolute; left: 8px; bottom: 8px; padding: 0 8px; border-radius: 999px;
+  background: rgba(255,255,255,.88); font-size: .78rem; color: var(--ink);
+}
+.polaroid h3 { font-family: var(--hand); font-size: 1.35rem; margin: 10px 0 2px; padding-right: 50px; line-height: 1.4; }
+.polaroid .meta { margin: 0; font-size: .85rem; color: var(--ink-soft); }
+
+/* 護照章 */
+.passport-stamp {
+  position: absolute; right: -10px; bottom: -34px; z-index: 1; /* 蓋在照片右下角 */
+  width: 70px; height: 70px; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 2.5px solid var(--c); outline: 1.5px dashed var(--c); outline-offset: -7px;
+  color: var(--c); background: rgba(255,253,248,.6); line-height: 1.05; text-align: center;
+  transform: rotate(var(--stamp-rot, -10deg)); opacity: .85;
+  mix-blend-mode: multiply;
+}
+.passport-stamp small { font-size: .58rem; letter-spacing: .08em; font-weight: 600; }
+.passport-stamp b { font-family: var(--hand); font-size: 1.1rem; }
+.polaroid:not(.in) .passport-stamp { opacity: 0; }
+.polaroid.in .passport-stamp { animation: stampIn .45s cubic-bezier(.3, 1.6, .5, 1) backwards; animation-delay: calc(.45s + var(--i) * .09s); }
+@keyframes stampIn {
+  from { opacity: 0; transform: scale(2.2) rotate(var(--stamp-rot, -10deg)); }
+}
+
+/* ===== 旅程內頁 ===== */
+.journal { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 16px; }
+.journal[hidden] { display: none; }
+.journal-backdrop { position: absolute; inset: 0; background: rgba(40, 28, 18, .55); backdrop-filter: blur(3px); animation: fade .3s; }
+@keyframes fade { from { opacity: 0; } }
+.journal-page {
+  position: relative; width: 100%; max-width: 760px; max-height: 90vh; overflow-y: auto;
+  background: var(--paper);
+  background-image: repeating-linear-gradient(to bottom, transparent 0 31px, rgba(160,130,90,.14) 31px 32px);
+  padding: 44px clamp(20px, 5vw, 52px); box-shadow: 0 24px 60px rgba(0,0,0,.35);
+  border-left: 10px solid var(--accent);
+  animation: openPage .5s cubic-bezier(.25, 1.3, .5, 1);
+  transform-origin: left center;
+}
+@keyframes openPage { from { opacity: 0; transform: perspective(1200px) rotateY(-28deg) translateY(30px); } }
+.close-btn {
+  position: absolute; top: 10px; right: 14px; border: none; background: none; z-index: 2;
+  font-size: 2rem; line-height: 1; color: var(--ink-soft); cursor: pointer; transition: transform .2s, color .2s;
+}
+.close-btn:hover { color: var(--accent); transform: rotate(90deg); }
+.j-meta { margin: 0; color: var(--accent); font-size: .95rem; padding-right: 100px; }
+.journal-page h2 { font-family: var(--hand); font-size: clamp(1.8rem, 4.5vw, 2.5rem); margin: 0 0 24px; padding-right: 90px; }
+.passport-stamp.big {
+  bottom: auto; top: 44px; right: clamp(20px, 5vw, 52px); width: 92px; height: 92px; --stamp-rot: 12deg;
+  animation: stampIn .5s .35s cubic-bezier(.3, 1.6, .5, 1) backwards;
+}
+.passport-stamp.big b { font-size: 1.45rem; }
+.passport-stamp.big small { font-size: .68rem; }
+
+.j-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 26px 20px; margin-bottom: 28px; }
+.j-photo {
+  position: relative; background: var(--card); padding: 8px 8px 6px; box-shadow: var(--shadow);
+  border: none; cursor: zoom-in; font: inherit; color: inherit; text-align: center;
+  animation: photoDrop .55s cubic-bezier(.3, 1.4, .5, 1) backwards; animation-delay: calc(.25s + var(--i) * .12s);
+  transition: transform .25s, box-shadow .25s;
+}
+.j-photo:nth-child(odd)  { transform: rotate(-1.8deg); }
+.j-photo:nth-child(even) { transform: rotate(1.6deg); }
+.j-photo:hover { transform: rotate(0) scale(1.04); box-shadow: var(--shadow-lift); z-index: 1; }
+.j-photo::before { /* 照片上的小紙膠帶 */
+  content: ""; position: absolute; top: -9px; left: 50%; width: 56px; height: 18px;
+  transform: translateX(-50%) rotate(-4deg); background: var(--c); opacity: .65;
+}
+@keyframes photoDrop { from { opacity: 0; transform: translateY(-30px) rotate(-10deg) scale(.9); } }
+.j-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+.j-photo span { display: block; font-family: var(--hand); font-size: .95rem; margin-top: 4px; color: var(--ink-soft); }
+.j-story { animation: fade .6s .5s backwards; }
+.j-story p { margin: 0 0 1em; font-size: 1.05rem; }
+.j-story p:first-child::first-letter {
+  float: left; font-family: var(--hand); font-size: 3rem; line-height: 1; margin: 4px 8px 0 0; color: var(--accent);
+}
+
+/* ===== 照片放大 ===== */
+.lightbox {
+  position: fixed; inset: 0; z-index: 3000; background: rgba(20, 14, 9, .92);
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+  animation: fade .25s;
+}
+.lightbox[hidden] { display: none; }
+.lightbox figure { margin: 0; text-align: center; max-width: 100%; animation: popIn .35s cubic-bezier(.3, 1.4, .5, 1); }
+.lightbox img { max-width: 100%; max-height: 80vh; display: block; margin: 0 auto; border: 8px solid var(--card); }
+.lightbox figcaption { color: #f3e9d6; font-family: var(--hand); font-size: 1.15rem; margin-top: 12px; }
+.lb-btn {
+  position: absolute; border: none; background: rgba(255,255,255,.12); color: #fff;
+  width: 48px; height: 48px; border-radius: 50%; font-size: 2rem; line-height: 1; cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+.lb-btn:hover { background: rgba(255,255,255,.25); transform: scale(1.1); }
+.lb-close { top: 16px; right: 16px; }
+.lb-prev  { left: 16px; }
+.lb-next  { right: 16px; }
+
+/* ===== 頁尾 ===== */
+.site-footer { text-align: center; padding: 28px 16px 48px; color: var(--ink-soft); font-family: var(--hand); font-size: 1.15rem; }
+.footer-plane { display: inline-block; color: var(--accent); animation: fly 3s ease-in-out infinite; }
+@keyframes fly {
+  0%, 100% { transform: translate(0, 0) rotate(-8deg); }
+  50%      { transform: translate(8px, -6px) rotate(4deg); }
+}
+
+/* ===== 手機 ===== */
+@media (max-width: 600px) {
+  .site-header { padding-top: 40px; }
+  #map { height: 55vh; }
+  .tape { width: 70px; }
+  .sticker-2, .sticker-4 { display: none; }
+  .sticker-1 { left: 4%; top: 12%; width: 46px; height: 46px; font-size: 1.3rem; }
+  .sticker-3 { right: 4%; top: 12%; width: 46px; height: 46px; font-size: 1.3rem; }
+  .ticket { padding: 6px 14px 6px 40px; }
+  .ticket b { font-size: 1.4rem; }
+  .lb-prev, .lb-next { top: auto; bottom: 20px; }
+  .lb-prev { left: calc(50% - 60px); }
+  .lb-next { right: calc(50% - 60px); }
+  .passport-stamp.big { width: 64px; height: 64px; top: 40px; }
+  .j-meta, .journal-page h2 { padding-right: 70px; }
+  .passport-stamp.big b { font-size: 1.15rem; }
+}
+.map-error { display: flex; height: 100%; align-items: center; justify-content: center; margin: 0; color: var(--ink-soft); font-family: var(--hand); }
+
+/* ===== 3D 地球 ===== */
+.globe {
+  position: relative; height: min(68vh, 580px); width: 100%;
+  background: radial-gradient(ellipse at center, #10182c 0%, #04060d 70%);
+  overflow: hidden; cursor: grab; touch-action: none;
+}
+.globe:active { cursor: grabbing; }
+.globe[hidden], #map[hidden] { display: none; }
+.globe canvas { display: block; opacity: 0; transform: scale(.85); transition: opacity 1s, transform 1.4s cubic-bezier(.2, 1, .3, 1); }
+.globe.loaded canvas { opacity: 1; transform: scale(1); }
+.globe-pins { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+
+.gpin {
+  position: absolute; left: -13px; top: -32px; /* 讓圖釘尖端對準地點 */
+  width: 26px; height: 30px; padding: 2px 0 0 2px; border: none; background: none;
+  cursor: pointer; transition: opacity .2s; will-change: transform;
+}
+.gpin .pin { position: relative; display: block; width: 22px; height: 22px; }
+/* 圖釘底下一圈一圈擴散的光環 */
+.gpin .pulse {
+  position: absolute; left: 13px; top: 30px; width: 26px; height: 10px; margin: -5px 0 0 -13px;
+  border-radius: 50%; border: 2px solid rgba(255, 196, 138, .9);
+  animation: ripple 2.2s ease-out infinite;
+}
+.gpin:nth-child(2n) .pulse { animation-delay: -.7s; }
+.gpin:nth-child(3n) .pulse { animation-delay: -1.4s; }
+@keyframes ripple {
+  from { transform: scale(.4); opacity: 1; }
+  to   { transform: scale(2.4); opacity: 0; }
+}
+.gpin-label {
+  position: absolute; left: 50%; bottom: 30px; transform: translateX(-50%) translateY(4px);
+  white-space: nowrap; padding: 2px 10px; border-radius: 3px;
+  background: var(--card); color: var(--ink); box-shadow: var(--shadow);
+  font-family: var(--hand); font-size: .95rem;
+  opacity: 0; pointer-events: none; transition: opacity .15s, transform .2s;
+}
+.gpin:hover .gpin-label, .gpin:focus-visible .gpin-label, .gpin.active .gpin-label { opacity: 1; transform: translateX(-50%); }
+.gpin.active { z-index: 2; }
+.gpin.active .pin { transform: rotate(-45deg) scale(1.3); box-shadow: 0 0 0 4px rgba(255,255,255,.35), 0 2px 6px rgba(0,0,0,.35); }
+.gpin.active .pulse { border-color: #fff; }
+.gpin:focus-visible { outline: none; }
+.gpin:focus-visible .pin { box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--accent); }
+.gpin.ghome { left: -7px; top: -7px; width: 14px; height: 14px; padding: 0; pointer-events: none !important; cursor: default; }
+
+/* 地球／平面 切換 */
+.view-toggle {
+  position: absolute; top: 24px; right: 24px; z-index: 600;
+  display: flex; background: var(--card); border-radius: 999px; padding: 3px;
+  box-shadow: var(--shadow);
+}
+.view-toggle[hidden] { display: none; }
+.view-toggle button {
+  border: none; background: none; padding: 5px 14px; border-radius: 999px; cursor: pointer;
+  font-family: var(--hand); font-size: .95rem; color: var(--ink-soft); transition: background .25s, color .25s;
+}
+.view-toggle button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+
+.map-hint {
+  margin: 8px 4px 0; font-size: .85rem; color: var(--ink-soft); font-family: var(--hand); text-align: center;
+}
+
+@media (max-width: 600px) {
+  .globe { height: 60vh; }
+  .view-toggle { top: 20px; right: 20px; }
+  .view-toggle button { padding: 4px 10px; }
+}
+
+/* ===== 寬螢幕：左邊地球固定不動、右邊是旅程清單 ===== */
+@media (min-width: 1024px) {
+  main {
+    max-width: 1360px;
+    display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr);
+    gap: 40px; align-items: start;
+  }
+  .map-wrap { position: sticky; top: 20px; margin: 8px 0 32px; }
+  .globe, #map { height: calc(100vh - 110px); max-height: 760px; min-height: 420px; }
+  .trips { padding-top: 8px; }
+  .section-title { text-align: left; margin-bottom: 20px; }
+  .trip-list { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 34px 20px; }
+  .polaroid h3 { font-size: 1.15rem; padding-right: 42px; }
+  .passport-stamp { width: 60px; height: 60px; }
+  .passport-stamp b { font-size: .95rem; }
+}
+
+/* ===== 系統設定「減少動態效果」時，關掉動畫 ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .plane { display: none; }
+  .squiggle path { stroke-dashoffset: 0; }
+}
