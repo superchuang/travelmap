@@ -418,3 +418,5 @@ h1 span:nth-child(3n)   { color: var(--accent); }
   .plane { display: none; }
   .squiggle path { stroke-dashoffset: 0; }
 }
+
+.empty-note { grid-column: 1 / -1; text-align: center; font-family: var(--hand); color: var(--ink-soft); font-size: 1.1rem; }

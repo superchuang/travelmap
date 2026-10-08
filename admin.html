@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>旅行手帳・管理</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Serif+TC:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="lib/leaflet/leaflet.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <header class="a-header">
+    <div class="a-brand">
+      <span class="a-stamp">ADMIN</span>
+      <h1>旅行手帳・管理</h1>
+    </div>
+    <div class="a-user">
+      <span id="who"></span>
+      <a href="index.html" target="_blank" class="a-link">🌏 查看網站</a>
+      <button id="logout" class="a-btn ghost" hidden>登出</button>
+    </div>
+  </header>
+
+  <!-- ===== 登入 ===== -->
+  <section id="login-view" class="login card" hidden>
+    <h2>登入</h2>
+    <p class="hint">只有管理員帳號可以新增、修改旅程。</p>
+    <form id="login-form">
+      <label>Email<input id="login-email" type="email" autocomplete="username" required></label>
+      <label>密碼<input id="login-password" type="password" autocomplete="current-password" minlength="6" required></label>
+      <button type="submit" class="a-btn primary">登入</button>
+    </form>
+    <details class="signup">
+      <summary>第一次使用？建立帳號</summary>
+      <p class="hint">用管理員的 Email 設定一組密碼（至少 6 個字）。建立後，信箱會收到確認信，點信裡的連結完成確認，再回到這裡登入。</p>
+      <button id="signup" class="a-btn">用上面的 Email 和密碼建立帳號</button>
+    </details>
+    <p id="login-msg" class="msg" role="status"></p>
+  </section>
+
+  <!-- ===== 管理畫面 ===== -->
+  <div id="app-view" class="app" hidden>
+
+    <aside class="side card">
+      <button id="new-trip" class="a-btn primary wide">＋ 新增旅程</button>
+      <ul id="trip-list" class="trip-list" aria-label="旅程清單"></ul>
+    </aside>
+
+    <section class="editor card" aria-labelledby="editor-title">
+      <div class="editor-head">
+        <h2 id="editor-title">編輯旅程</h2>
+        <span id="dirty" class="dirty" hidden>● 尚未儲存</span>
+      </div>
+
+      <form id="trip-form" novalidate>
+        <div class="grid">
+          <label class="full"><span>標題 <b>*</b></span>
+            <input name="title" required maxlength="60" placeholder="例如：京都・楓紅的季節">
+          </label>
+          <label><span>國家 <b>*</b></span>
+            <input name="country" required maxlength="30" placeholder="日本">
+          </label>
+          <label>城市／地區
+            <input name="city" maxlength="30" placeholder="京都">
+          </label>
+          <label><span>出發日期 <b>*</b></span>
+            <input name="date" type="date" required>
+          </label>
+          <label>回程日期
+            <input name="endDate" type="date">
+          </label>
+        </div>
+
+        <fieldset>
+          <legend>📍 地圖位置 <b>*</b></legend>
+          <div class="search-row">
+            <input id="place-search" type="search" placeholder="輸入地名搜尋，例如：清水寺、Reykjavik">
+            <button type="button" id="place-search-btn" class="a-btn">搜尋</button>
+          </div>
+          <ul id="search-results" class="search-results" hidden></ul>
+          <div id="pick-map" class="pick-map" aria-label="點地圖設定位置"></div>
+          <p class="hint">搜尋地名，或直接在地圖上點一下（圖釘可以拖曳）。也可以從 Google 地圖複製座標貼到下面。</p>
+          <div class="grid three">
+            <label>緯度<input name="lat" type="number" step="any" min="-90" max="90" required></label>
+            <label>經度<input name="lng" type="number" step="any" min="-180" max="180" required></label>
+            <label>貼上座標<input id="paste-coords" placeholder="25.0330, 121.5654"></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>📷 照片</legend>
+          <label class="drop" id="drop">
+            <input id="photo-input" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+            <span>點這裡選照片，或把照片拖進來<br><small>會自動縮小到適合網頁的大小（最長邊 1600px）</small></span>
+          </label>
+          <ul id="photos" class="photos"></ul>
+        </fieldset>
+
+        <label class="full">✍️ 心得
+          <textarea name="story" rows="10" placeholder="寫下這趟旅程的故事……空一行就是新的一段。"></textarea>
+        </label>
+
+        <div class="actions">
+          <button type="submit" id="save" class="a-btn primary">💾 儲存</button>
+          <button type="button" id="delete" class="a-btn danger">🗑 刪除這趟旅程</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="lib/leaflet/leaflet.js"></script>
+  <script src="lib/world.js"></script>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
